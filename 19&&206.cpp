@@ -18,6 +18,23 @@ ListNode* removeNthFromEnd(ListNode* head, int n){
 	return head;
 }
 
+ListNode* reverse(ListNode* head){
+	if(head==nullptr || head->next==nullptr)return head;
+	auto l=reverse(head->next);
+	head->next->next=head;
+	head->next=nullptr;
+	return l; 
+}
+
+ListNode* reverseIter(ListNode* head){
+	auto pre=nullptr;
+	while(head!=nullptr){
+		auto t=head->next;
+		head->next=pre;
+		pre=head;
+		head=t;
+	}
+
 int main(){
 	
 }
