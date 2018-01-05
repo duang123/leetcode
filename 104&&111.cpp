@@ -28,6 +28,26 @@ struct TreeNode {
 	  return ret;
   	
   }
+int minDepth(TreeNode* root){
+
+  	if(root==nullptr)return 0;
+  	queue<TreeNode*>q;
+  	int ret=0;
+  	q.push(root);
+  	while(!q.empty()){
+  		++ret;
+  		for(int i=0,n=q.size();i<n;++i){
+  			auto t=q.front();
+  			q.pop();
+  			if(t->left)q.push(t->left);
+  			if(t->right)q.push(t->right);
+  			if(t->right==nullptr && t->left==nullptr)return ret;
+		  }
+	  }
+	  return ret;
+  	
+  }
+
 int main(){
 	return 0;
 }
