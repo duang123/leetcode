@@ -1,0 +1,17 @@
+class Solution {
+public:
+    string frequencySort(string s) {
+        if(s.empty())return s;
+        unordered_map<char,int>m;
+        string ret="";
+        for(auto i:s)++m[i];
+        map<int,string>mp;
+        for(auto e:m){
+            mp[e.second]+=string(e.second,e.first);
+        }
+        for(int i=s.size();i>=0;--i){
+            ret.append(mp[i]);
+        }
+        return ret;
+    }
+};
