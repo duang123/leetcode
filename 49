@@ -1,0 +1,30 @@
+class Solution {
+	public:
+		vector<vector<string>> groupAnagrams(vector<string>& strs) {
+			if(strs.empty())return vector<vector<string>> {};
+			vector<vector<string>>ret;
+			unordered_map<string,multiset<string>>mp;
+			for(auto s:strs) {
+				auto t=strSort(s);
+				mp[t].insert(s);
+			}
+			for(auto e:mp)
+				ret.push_back(vector<string>(e.second.begin(),e.second.end()));
+			return ret;
+		}
+		string strSort(const string& str) {
+			vector<int>count(26,0);
+			for(auto i:str)
+				++count[i-'a'];
+			int i=0;
+			string s;
+			while(i!=26) {
+				if(count[i]==0)++i;
+				else {
+					s.push_back(i+'a');
+					--count[i];
+				}
+			}
+			return s;
+		}
+};
