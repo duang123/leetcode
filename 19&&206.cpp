@@ -35,6 +35,24 @@ ListNode* reverseIter(ListNode* head){
 		head=t;
 	}
 
+	ListNode* reverseBetween(ListNode* head, int m, int n) {
+        if(head==nullptr||head->next==nullptr||m>=n) return head;
+        ListNode dummy(-1);dummy.next=head;
+        int i=0;
+        auto left_l=&dummy;
+        for(;i<m-1;++i)left_l=left_l->next;
+        auto cur=left_l->next,left_r=cur;ListNode*prev=nullptr;
+        ++i;
+        for(;cur&&i<=n;++i){
+        	auto tmp=cur->next;
+        	cur->next=prev;
+        	prev=cur;
+        	cur=tmp;
+		}
+		left_l->next=prev;left_r->next=cur;
+		return dummy.next;
+    }
+
 int main(){
 	
 }
