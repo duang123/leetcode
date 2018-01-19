@@ -1,34 +1,54 @@
-#include<iostream>
-#include<vector>
-using namespace std;
-
-void helper(vector<vector<int> > &ret, vector<int> nums, int n){
-        if(n==0){
-        	ret.push_back(nums);
-        	return;
-		}
-		for(int i=0;i<=n;++i){
-			swap(nums[i],nums[n]);
-			helper(ret,nums,n-1);
-			swap(nums[i],nums[n]);
-		}
-    
-    }
-
-	vector<vector<int> > permute(vector<int> nums) {
-        if(nums.empty())return vector<vector<int> >{};
-        vector<vector<int> >ret;
-        auto sz=nums.size();
-        helper(ret,nums,sz-1);
+//Permutations
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        if(nums.empty())return vector<vector<int>>{};
+        vector<vector<int>>ret;
+        vector<int>tmp;
+        helper(ret,tmp,nums);
         return ret;
     }
-    
-int main(){
-	vector<int>v{1,2,3};
-	auto ret=permute(v);
-	for(auto ele:ret){
-		for(auto i:ele)cout<<i<<",";
-		cout<<endl;
-	}
-	return 0;
-}
+private:
+    void helper(vector<vector<int>>&ret,vector<int>tmp,const vector<int>&nums){
+        if(tmp.size()==nums.size()){
+            ret.push_back(tmp);
+            return ;
+        }
+        for(int i=0;i<nums.size();++i){
+            if(find(tmp.begin(),tmp.end(),nums[i])!=tmp.end())continue;
+            tmp.push_back(nums[i]);
+            helper(ret,tmp,nums);
+            tmp.pop_back();
+        }
+    }
+};
+//PermutationsII
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        if(nums.empty())return vector<vector<int>>{};
+        vector<vector<int>>ret;
+        vector<int>tmp;
+        vector<bool>used(nums.size(),false);
+        sort(nums.begin(),nums.end());
+        helper(ret,tmp,nums,used);
+        return ret;
+    }
+private:
+    void helper(vector<vector<int>>&ret,vector<int>tmp,const vector<int>&nums,vector<bool>used){
+        if(tmp.size()==nums.size()){
+            ret.push_back(tmp);
+            return ;
+        }
+        for(int i=0;i<nums.size();++i){
+            if(used[i]) continue;
+            if(i>0 &&nums[i-1]==nums[i] && !used[i-1]) continue;
+            tmp.push_back(nums[i]);
+            used[i]=true;
+            helper(ret,tmp,nums,used);
+            tmp.pop_back();
+            used[i]=false;
+        }
+        
+    }
+};
