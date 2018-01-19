@@ -1,0 +1,42 @@
+//Subsets I
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        if(nums.empty())return vector<vector<int>>{};
+        vector<vector<int>>ret;
+        vector<int>tmp;
+        helper(ret,tmp,nums,0);
+        return ret;
+    }
+private:
+    void helper(vector<vector<int>>&ret,vector<int>tmp,const vector<int>&nums,int start){
+        ret.push_back(tmp);
+        for(int i=start;i!=nums.size();++i){
+            tmp.push_back(nums[i]);
+            helper(ret,tmp,nums,i+1);
+            tmp.pop_back();
+        }
+    }
+};
+//Subsets II
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        if(nums.empty())return vector<vector<int>>{};
+        vector<int>tmp;
+        vector<vector<int>>ret;
+        sort(nums.begin(),nums.end());
+        helper(ret,tmp,nums,0);
+        return ret;
+    }
+private:
+    void helper(vector<vector<int>>&ret,vector<int>tmp,const vector<int>&nums,int start){
+        ret.push_back(tmp);
+        for(int i=start;i<nums.size();++i){
+            if(i!=start&&nums[i]==nums[i-1])continue;
+            tmp.push_back(nums[i]);
+            helper(ret,tmp,nums,i+1);
+            tmp.pop_back();
+        }
+    }
+};
