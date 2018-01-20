@@ -1,0 +1,48 @@
+//Combination Sum II
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& nums, int target) {
+        if(nums.empty())return vector<vector<int>>{};
+        vector<vector<int>>ret;
+        vector<int>tmp;
+        sort(nums.begin(),nums.end());
+        helper(ret,tmp,nums,target,0);
+        return ret;
+    }
+    
+private:
+    void helper(vector<vector<int>>&ret,vector<int>tmp,const vector<int>&nums,int target,int start){
+        if(0==target)
+           ret.push_back(tmp);
+        for(int i=start;i!=nums.size();++i){
+            if(target<nums[i])return;
+            if(i>0&& i>start&&nums[i]==nums[i-1])continue;
+            tmp.push_back(nums[i]);
+            helper(ret,tmp,nums,target-nums[i],i+1);
+            tmp.pop_back();
+        }
+    }
+};
+
+//Combination Sum
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& nums, int target) {
+        if(nums.empty())return vector<vector<int>>{};
+        vector<vector<int>>ret;
+        vector<int>tmp;
+        helper(ret,tmp,nums,target,0);
+        return ret;
+    }
+private:
+    void helper(vector<vector<int>>&ret,vector<int>tmp,const vector<int>&nums,int target,int start){
+        if(!tmp.empty()&&accumulate(tmp.begin(),tmp.end(),0)==target)
+          ret.push_back(tmp);
+        else if(accumulate(tmp.begin(),tmp.end(),0)>target)return ;
+        for(int i=start;i!=nums.size();++i){
+            tmp.push_back(nums[i]);
+            helper(ret,tmp,nums,target,i);
+            tmp.pop_back();
+        }
+    }
+};
