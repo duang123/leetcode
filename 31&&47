@@ -1,0 +1,54 @@
+#include<vector>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+
+ void nextPermutation(vector<int>& nums) {
+        if(nums.size()<2)return ;
+        int i;
+        for(i=nums.size()-2;i>=0;--i){
+            if(nums[i]<nums[i+1])break;
+        }
+        if(i>=0){
+            int k=i;
+            for(i=nums.size()-1;i>k;--i){
+                if(nums[i]>nums[k])break;
+            }
+            swap(nums[k],nums[i]);
+            reverse(nums.begin()+k+1,nums.end());
+            
+        }else reverse(nums.begin(),nums.end());
+    }
+
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        if(nums.empty())return vector<vector<int>>{};
+        vector<vector<int>>ret;
+        vector<int>tmp;
+        vector<bool> used(nums.size(),false);
+        sort(nums.begin(),nums.end());
+        helper(ret,nums,tmp,used);
+        return ret;
+    }
+
+    void helper(vector<vector<int>>&ret,vector<int>&nums,vector<int>&tmp,vector<bool> used){
+        if(tmp.size()==nums.size()){
+            ret.push_back(tmp);
+            return ;
+        }
+        for(int i=0;i<nums.size();++i){
+            if(used[i])continue;
+            if(i>0&&used[i-1]==false&&nums[i-1]==nums[i])continue;
+            used[i]=true;
+            tmp.push_back(nums[i]);
+            helper(ret,nums,tmp,used);
+            used[i]=false;
+            tmp.pop_back();
+        }
+    }
+int main(){
+	vector<int>v{1,2,4,6,5,3,2,1};
+	nextPermutation(v);
+	for(auto i: v)cout<<i<<",";
+	cout<<endl;
+	return 0;
+}
