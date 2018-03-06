@@ -1,0 +1,18 @@
+#300. Longest Increasing Subsequence
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        if(nums.empty())return 0;
+        vector<int>ret(nums.size(),1);
+        int l=ret[0];
+        for(int i=1;i!=nums.size();++i){
+            for(int j=0;j<i;++j){
+                if(nums[j]<nums[i])ret[i]=max(ret[j]+1,ret[i]);
+                
+            }
+            l=max(l,ret[i]);
+        }
+        return l;    
+        
+    }
+};
