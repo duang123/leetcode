@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool validPalindrome(string s) {
+        return helper(0,s.size()-1,s,0);
+    }
+private:
+    bool helper(int i,int j,string& s,int tmp){
+        if(i>=j)return true;
+        if(s[i]==s[j])return helper(1+i,j-1,s,tmp);
+        else {
+              if(tmp>=1)
+                  return false;
+              else
+                  return helper(i+1,j,s,tmp+1)||helper(i,j-1,s,tmp+1);
+             }
+        //return i >= j ||(s[i]==s[j]? helper(1+i,j-1,s,tmp):tmp==0&&(helper(i+1,j,s,tmp+1)||helper(i,j-1,s,tmp+1)));
+    }
+};
