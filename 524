@@ -1,0 +1,20 @@
+#524. Longest Word in Dictionary through Deleting
+class Solution {
+public:
+    string findLongestWord(string s, vector<string>& d) {
+        string ret="";
+        for(auto str:d){
+            int i,j;
+            if(str.size()>s.size())continue;
+            for(i=0,j=0;i<s.size()&&j<str.size();){
+                if(s[i]==str[j]){++i;++j;}
+                else ++i;
+            }
+            if(j==str.size()){
+                if(ret.size()<str.size())ret=str;
+                else if(ret.size()==str.size()&&ret>str)ret=str;
+            }
+        }
+        return ret;
+    }
+};
