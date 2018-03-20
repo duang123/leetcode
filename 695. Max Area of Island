@@ -1,0 +1,25 @@
+#695. Max Area of Island
+class Solution {
+public:
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        if(grid.empty()||grid[0].empty())return 0;
+        auto m=grid.size(),n=grid[0].size();
+        vector<vector<bool>>seen(m,vector<bool>(n,false));
+        auto ret=0;
+        for(int i=0;i<m;++i){
+            for(int j=0;j<n;++j){
+                ret=max(ret,helper(i,j,grid,seen));
+            }
+        }
+        return ret;
+    }
+private:
+    int helper(int i,int j,vector<vector<int>>& grid,vector<vector<bool>>&seen){
+        auto m=grid.size(),n=grid[0].size();
+        if(i<0||i==m||j<0||j==n||grid[i][j]==0||seen[i][j]==true)return 0;
+        
+        else {seen[i][j]=true;
+              return 1+helper(i+1,j,grid,seen)+helper(i,j+1,grid,seen)+helper(i-1,j,grid,seen)+helper(i,j-1,grid,seen);
+             }
+    }
+};
