@@ -1,0 +1,53 @@
+#547. Friend Circles
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& M) {
+        if(M.empty()||M[0].empty())return 0;
+        auto n=M.size();
+        vector<bool>visited(n,false);
+        auto ret=0;
+        for(int i=0;i<n;++i){
+            if(visited[i]==false){visited[i]=true;dfs(M,visited,i);++ret;
+                                 }    
+        }
+        return ret;
+    }
+private:
+    void dfs(vector<vector<int>>& M,vector<bool>&visited,int r){
+        visited[r]=true;
+        for(int i=0;i<M.size();++i){
+            if(M[r][i]==1&&visited[i]==false){
+                dfs(M,visited,i);  visited[i]=true;
+            }
+        }
+    }
+};
+#200. Number of Islands
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        if(grid.empty()||grid[0].empty())return 0;
+        auto m=grid.size(),n=grid[0].size();
+        auto ret=0;
+        vector<vector<bool>>visited(m,vector<bool>(n,false));
+        for(int i=0;i<m;++i){
+            for(int j=0;j<n;++j){
+                if(grid[i][j]=='1'&&visited[i][j]==false){
+                    dfs(grid,visited,i,j);
+                    ++ret;
+                }
+            }
+        }
+        return ret;
+    }
+private:
+    void dfs(vector<vector<char>>& grid,vector<vector<bool>>&visited,int i,int j){
+        auto m=grid.size(),n=grid[0].size();
+        if(i<0||i==m||j<0||j==n||grid[i][j]=='0'||visited[i][j]==true)return;
+        visited[i][j]=true;
+        dfs(grid,visited,i+1,j);
+        dfs(grid,visited,i,j+1);
+        dfs(grid,visited,i-1,j);
+        dfs(grid,visited,i,j-1);
+    }
+};
