@@ -1,0 +1,24 @@
+#547. Friend Circles
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& M) {
+        if(M.empty()||M[0].empty())return 0;
+        auto n=M.size();
+        vector<bool>visited(n,false);
+        auto ret=0;
+        for(int i=0;i<n;++i){
+            if(visited[i]==false){visited[i]=true;dfs(M,visited,i);++ret;
+                                 }    
+        }
+        return ret;
+    }
+private:
+    void dfs(vector<vector<int>>& M,vector<bool>&visited,int r){
+        visited[r]=true;
+        for(int i=0;i<M.size();++i){
+            if(M[r][i]==1&&visited[i]==false){
+                dfs(M,visited,i);  visited[i]=true;
+            }
+        }
+    }
+};
