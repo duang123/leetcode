@@ -1,0 +1,35 @@
+#417. Pacific Atlantic Water Flow
+class Solution {
+public:
+    vector<pair<int, int>> pacificAtlantic(vector<vector<int>>& matrix) {
+        if(matrix.empty()||matrix[0].empty())return vector<pair<int, int>>{};
+        auto m=matrix.size(),n=matrix[0].size();
+        vector<vector<bool>>P(m,vector<bool>(n,false));
+        vector<vector<bool>>A(m,vector<bool>(n,false));
+        vector<pair<int, int>>ret;
+        for(int i=0;i<m;++i){
+            dfs(i,0,P,INT_MIN,matrix);
+            dfs(i,n-1,A,INT_MIN,matrix);
+        }
+        for(int j=0;j<n;++j){
+            dfs(0,j,P,INT_MIN,matrix);
+            dfs(m-1,j,A,INT_MIN,matrix);
+        }
+        for(int i=0;i<m;++i){
+            for(int j=0;j<n;++j){
+                if(A[i][j]&&P[i][j])ret.push_back(make_pair(i,j));
+            }
+        }
+        return ret;
+    }
+private:
+    void dfs(int i,int j,vector<vector<bool>>&reach,int height,vector<vector<int>>& matrix){
+        auto m=matrix.size(),n=matrix[0].size();
+        if(i<0||i==m||j<0||j==n||matrix[i][j]<height||reach[i][j])return;
+        reach[i][j]=true;
+        dfs(i+1,j,reach,matrix[i][j],matrix);
+        dfs(i,j+1,reach,matrix[i][j],matrix);
+        dfs(i-1,j,reach,matrix[i][j],matrix);
+        dfs(i,j-1,reach,matrix[i][j],matrix);
+    }
+};
