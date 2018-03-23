@@ -1,0 +1,30 @@
+#79. Word Search
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        if(word.empty())return true;
+        if(board.empty()||board[0].empty())return false;
+        auto m=board.size(),n=board[0].size();
+        vector<vector<bool>>visited(m,vector<bool>(n,false));
+        int pos=0;
+        for(int i=0;i<m;++i){
+            for(int j=0;j<n;++j){
+                if(helper(board,visited,word,i,j,pos))return true;
+            }
+        }
+        return false;
+    }
+private:
+    bool helper(const vector<vector<char>>& board,vector<vector<bool>>&visited,const string& word,int i,int j,int pos){
+        if(pos==word.size())return true;
+        auto m=board.size(),n=board[0].size();
+        if(i<0 || i==m || j<0 ||j==n || visited[i][j] || board[i][j]!=word[pos])return false;
+        visited[i][j]=true;
+        if(helper(board,visited,word,i+1,j,pos+1))return true;
+        if(helper(board,visited,word,i,j+1,pos+1))return true;
+        if(helper(board,visited,word,i-1,j,pos+1))return true;
+        if(helper(board,visited,word,i,j-1,pos+1))return true;
+        visited[i][j]=false;
+        return false;
+    }
+};
