@@ -1,0 +1,25 @@
+#241. Different Ways to Add Parentheses
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string input) {
+        if(input.empty())return vector<int>{};
+        vector<int>ret;
+        vector<int>left,right;
+        for(int i=0;i<input.size();++i){
+           auto c=input[i];
+            if(c=='+'||c=='-'||c=='*'){
+                left=diffWaysToCompute(input.substr(0,i));
+                right=diffWaysToCompute(input.substr(i+1));
+                for(auto e1:left){
+                    for(auto e2:right){
+                        if(c=='+'){ret.push_back(e1+e2);}
+                        else if(c=='-')ret.push_back(e1-e2);
+                        else ret.push_back(e1*e2);
+                    }
+                }
+            }
+        }
+        if(ret.empty()){ret.push_back(stoi(input));}
+        return ret;
+    }
+};
