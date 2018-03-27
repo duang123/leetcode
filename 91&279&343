@@ -1,0 +1,45 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+//279
+int integerBreak(int n) {
+	vector<int>v(n+1,1);
+	for(int i=2; i<=n; ++i) {
+		for(int j=1; j<n; ++j) {
+			v[i]=max(v[i],max(v[j]*(i-j),(i-j)*j));
+		}
+	}
+	return v[n];
+}
+//343
+int numSquares(int n) {
+	vector<int>v(n+1,INT_MAX);
+	v[0]=0;     //trick is here
+	for(int i=1; i<=n; ++i) {
+		for(int j=1; j*j<=i; ++j) {
+			v[i]=min(v[i],v[i-j*j]+1);
+		}
+	}
+	return v.back();
+}
+//91
+int numDecodings(string s) {
+	if(s.empty())return 0;
+	vector<int>v(s.size()+1,0);
+	v[0]=1;
+	v[1]=(s[0]=='0')? 0:1;
+	for(int i=2; i<=s.size(); ++i) {
+		auto t1=stoi(s.substr(i-1,1));
+		if(t1>=0&&t1<10)v[i]+=v[i-1];
+		auto t2=stoi(s.substr(i-2,2));
+		if(t2<27&&t2>9)v[i]+=v[i-2];
+	}
+	return v.back();
+}
+
+int main() {
+	//cout<<integerBreak(10)<<endl;
+	cout<<numDecodings("11")<<endl;
+	return 0;
+}
