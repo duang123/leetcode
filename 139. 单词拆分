@@ -1,0 +1,19 @@
+//139. 单词拆分
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        if(s.empty())return true;
+        auto m=s.size();
+        vector<bool>ret(m+1,false);
+        ret[0]=true;
+        for(int i=1;i<=m;++i){
+            for(auto ele:wordDict){
+                auto sz=ele.size();
+                if(sz<=i && s.substr(i-sz,sz)==ele){
+                     ret[i]=ret[i] || ret[i-sz];
+                }
+            }
+        }
+        return ret[m];
+    }
+};
