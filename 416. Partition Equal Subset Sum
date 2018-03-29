@@ -1,0 +1,25 @@
+//416. Partition Equal Subset Sum
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        if(nums.empty())return true;
+        auto m=nums.size();
+        auto sum=0;
+        for(auto i:nums)sum+=i;
+        if(sum%2==1)return false;
+        
+        vector<vector<bool>>ret(m+1,vector<bool>(sum/2+1,false));
+        ret[0][0]=true;
+        for(int i=1;i<=m;++i)ret[i][0]=true;
+        
+        for(int i=1;i<=m;++i){
+            for(int j=1;j<=sum/2;++j){
+                ret[i][j]=ret[i-1][j];
+                if(j>=nums[i-1]){
+                    ret[i][j]=ret[i][j] || ret[i-1][j-nums[i-1]];
+                }
+            }
+        }
+        return ret[m][sum/2];
+    }
+};
