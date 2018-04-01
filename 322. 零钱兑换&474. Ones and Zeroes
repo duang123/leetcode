@@ -1,0 +1,38 @@
+//322. 零钱兑换
+//完全背包问题
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        auto m=coins.size();
+        vector<int>dp(amount+1,amount+1);
+        dp[0]=0;
+        for(int i=0;i<m;++i){
+            for(int j=coins[i];j<=amount;++j){
+                dp[j]=min(dp[j],dp[j-coins[i]]+1);
+            }
+        }
+        if(dp[amount]>amount)return -1;
+        else return dp[amount];
+    }
+};
+//474. Ones and Zeroes
+//二维背包问题
+class Solution {
+public:
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<vector<int>>dp(m+1,vector<int>(n+1,0));
+        for(auto s:strs){
+            auto one=0,zero=0;
+            for(auto c:s){
+                if(c=='0')++zero;
+                else if(c=='1')++one;
+            }
+            for(int i=m;i>=zero;--i){
+                for(int j=n;j>=one;--j){
+                    dp[i][j]=max(dp[i][j],dp[i-zero][j-one]+1);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
