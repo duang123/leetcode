@@ -1,0 +1,41 @@
+//123. 买卖股票的最佳时机 III
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        //if(prices.size()<2)return 0;
+        int buy1=INT_MIN,buy2=buy1;
+        int sell1=0,sell2=sell1;
+        for(int i=0;i<prices.size();++i){
+            buy1=max(buy1,-prices[i]);
+            sell1=max(sell1,buy1+prices[i]);
+            buy2=max(buy2,sell1-prices[i]);
+            sell2=max(sell2,buy2+prices[i]);
+        }
+        return sell2;
+    }
+};
+
+//188. 买卖股票的最佳时机 IV
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        if(prices.empty())return 0;
+        auto m=prices.size();
+        auto ret=0;
+        if(k>=m/2){
+            for(int i=1;i<m;++i){
+                if(prices[i]>prices[i-1])ret+=prices[i]-prices[i-1];
+            }
+            return ret;
+        }
+        vector<vector<int>>dp(k+1,vector<int>(m,0));
+        for(int i=1;i<=k;++i){
+            auto tmp=INT_MIN;
+            for(int j=1;j<m;++j){
+                tmp=max(tmp,dp[i-1][j-1]-prices[j-1]);
+                dp[i][j]=max(dp[i][j-1],tmp+prices[j]);
+            }
+        }
+        return dp[k][m-1];
+    }
+};
