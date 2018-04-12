@@ -1,0 +1,41 @@
+//138. 复制带随机指针的链表
+/**
+ * Definition for singly-linked list with a random pointer.
+ * struct RandomListNode {
+ *     int label;
+ *     RandomListNode *next, *random;
+ *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        map<RandomListNode*,int>m;
+        auto t=head;
+        int len=0;
+        while(t){
+            m[t]=++len;
+            t=t->next;
+        }
+        RandomListNode dummy(0);
+        RandomListNode* head1=&dummy;
+        t=head;
+        vector<RandomListNode*>v;
+        while(len--){
+            auto tmp=new RandomListNode(t->label);
+            v.push_back(tmp);
+            t=t->next;
+            head1->next=tmp;
+            head1=tmp;
+        }
+        head1=dummy.next;
+        while(head){
+            if(head->random)
+                head1->random=v[m[head->random]-1];
+            else head1->random=nullptr;
+            head=head->next;
+            head1=head1->next;
+        }
+        return dummy.next;
+    }
+};
