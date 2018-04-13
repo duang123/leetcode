@@ -1,0 +1,63 @@
+//295. 数据流的中位数
+class MedianFinder {
+public:
+    /** initialize your data structure here. */
+    MedianFinder() {
+        
+    }
+    
+    void addNum(int num) {
+        auto m=small.size(),n=big.size();
+        if(small.empty()){
+            small.push(num);
+            return;
+        }
+        if(m==n){
+            auto s=small.top(),b=big.top();
+            if(s<num)
+                big.push(num);
+            else small.push(num);
+        }
+        else if(m>n){
+            if(small.top()<num)
+                big.push(num);
+            else 
+            {   
+                auto t=small.top();
+                small.pop();
+                small.push(num);
+                big.push(t);
+            }
+        }
+        else if(m<n){
+            if(big.top()>num)
+                small.push(num);
+            else 
+            {
+                auto t=big.top();
+                small.push(t);
+                big.pop();
+                big.push(num);
+            }
+        }
+    }
+    
+    double findMedian() {
+        auto m=small.size(),n=big.size();
+        if(m==n)
+            return (small.top()+big.top())/2.0;
+        else if(m>n)
+            return small.top();
+        return big.top();
+    }
+private:
+    priority_queue<int>small;
+    priority_queue<int,vector<int>,greater<int>>big;
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
