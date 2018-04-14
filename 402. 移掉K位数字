@@ -1,0 +1,21 @@
+//402. 移掉K位数字
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        vector<char>v;
+        for(int i=0;i<num.size();++i){
+            while(!v.empty()&& num[i]<v.back() && k>0){
+                v.pop_back();
+                --k;
+            }
+            if(num[i]-'0'!=0 || !v.empty()){
+                v.push_back(num[i]);
+            }
+        }
+        while(!v.empty()&&k-->0)
+            v.pop_back();
+        string ret(v.begin(),v.end());
+        if(ret=="")return "0";
+        return ret;
+    }
+};
