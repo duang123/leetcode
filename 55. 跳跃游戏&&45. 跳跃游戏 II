@@ -1,0 +1,42 @@
+//55. 跳跃游戏
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        if(nums.size()<2)return true;
+        for(int i=0;i<nums.size();){
+            auto j=i+nums[i],tmp=j;
+            auto next=j;
+            while(++i<=j){
+                if(tmp<nums[i]+i){
+                    tmp=i+nums[i];
+                    next=i;
+                }      
+            }
+            if(tmp>=nums.size()-1)return true;
+            i=next;
+            if(nums[i]==0)return false;
+        }
+        return false;
+    }
+};
+
+//45. 跳跃游戏 II
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        auto n=nums.size();
+        if(n<2)return 0;
+        int cur_max=nums[0];
+        int pre_max=nums[0];
+        auto ret=1;
+        for(int i=1;i<n;++i){
+            if(i>cur_max){
+                ++ret;
+                cur_max=pre_max;
+            }
+            if(pre_max<nums[i]+i)
+                pre_max=nums[i]+i;
+        }
+        return ret;
+    }
+};
