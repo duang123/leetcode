@@ -1,7 +1,7 @@
 #376. Wiggle Subsequence
 class Solution {
 public:
-    int wiggleMaxLength(vector<int>& nums) {
+    /*int wiggleMaxLength(vector<int>& nums) {
         auto m=nums.size();
         if(m<2)return m;
         vector<int>up(m,1);
@@ -12,5 +12,45 @@ public:
             else {up[i]=up[i-1];down[i]=down[i-1];}
         }
         return max(up[m-1],down[m-1]);
+    }
+    */
+    //状态机更厉害！！！
+    int wiggleMaxLength(vector<int>& nums) {
+        if(nums.size()<2)return nums.size(); //2个元素相等只是1！
+        const int BEGIN=0;
+        const int UP=1;
+        const int DOWN=2;
+        int state=BEGIN;
+        int ret=1;
+        for(int i=1;i<nums.size();++i){
+            switch(state){
+                case BEGIN:
+                    if(nums[i]>nums[i-1]){
+                        state=UP;
+                        ++ret;
+                    }
+                        
+                    else if(nums[i]<nums[i-1]){
+                        state=DOWN;
+                        ++ret;
+                    }
+                        
+                    break;
+                case UP:
+                    if(nums[i]<nums[i-1]){
+                        state=DOWN;
+                        ++ret;
+                    }
+                    break;
+                case DOWN:
+                    if(nums[i]>nums[i-1]){
+                        ++ret;
+                        state=UP;
+                    }
+                    break;
+            }
+            
+        }
+        return ret;
     }
 };
