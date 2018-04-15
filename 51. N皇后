@@ -1,0 +1,43 @@
+//51. N皇后
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<int>>mark(n,vector<int>(n,0));
+        vector<string>tmp(n,string(n,'.'));
+        vector<vector<string>>ret;
+        helper(0,n,tmp,mark,ret);
+        return ret;
+    }
+private:
+    void put(int x,int y,vector<vector<int>>&mark){
+        static const int a[8]={-1,1,0,0,1,-1,1,-1};
+        static const int b[8]={0,0,1,-1,1,-1,-1,1};
+        mark[x][y]=1;
+        auto m=mark.size();
+        for(int i=1;i<m;++i){
+            for(int j=0;j<8;++j){
+                auto new_x=x+i*a[j];
+                auto new_y=y+i*b[j];
+                if(new_x>=0&&new_x<m&&new_y>=0&&new_y<m){
+                    mark[new_x][new_y]=1;
+                }
+            }
+        }
+    }
+    void helper(int k,int n,vector<string>&tmp,vector<vector<int>>&mark,vector<vector<string>>&ret){
+        if(k==n){
+            ret.push_back(tmp);
+            return;
+        }
+            for(int j=0;j<n;++j){
+                if(mark[k][j]==0){          //哪里能放Q
+                    auto tt=mark;
+                    put(k,j,mark);
+                    tmp[k][j]='Q';
+                    helper(k+1,n,tmp,mark,ret);
+                    mark=tt;
+                    tmp[k][j]='.';
+                }
+            }
+    }
+};
