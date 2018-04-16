@@ -1,0 +1,56 @@
+//315. 计算右侧小于当前元素的个数
+class Solution {
+public:
+    vector<int> countSmaller(vector<int>& nums) {
+        vector<int>count(nums.size(),0);
+        if(nums.empty())return count;
+        vector<pair<int,int>>v_pair(nums.size());
+        for(int i=0;i<nums.size();++i){
+            v_pair[i].first=nums[i];
+            v_pair[i].second=i;
+        }
+        merge_sort(v_pair,count);
+        return count;
+    }
+private:
+    void merge_sort(vector<pair<int,int>>&v,vector<int>&count){
+        if(v.size()<2)return;
+        auto mid=v.size()/2;
+        vector<pair<int,int>> l;
+        vector<pair<int,int>> r;
+        for(int i=0;i<v.size();++i){
+            if(i<mid){
+                l.push_back(v[i]);
+            }
+            else {
+                r.push_back(v[i]);
+            }
+        }
+        merge_sort(l,count);
+        merge_sort(r,count);
+        v.clear();
+        merge(l,r,v,count);
+    }
+    void merge(vector<pair<int,int>>&l,vector<pair<int,int>>&r,vector<pair<int,int>>&v,vector<int>&count){
+        int i=0,j=0;
+        while(i<l.size()&&j<r.size()){
+            if(l[i].first<=r[j].first){
+                count[l[i].second]+=j;
+                v.push_back(l[i]);
+                ++i;
+            }else {
+                v.push_back(r[j]);
+                ++j;
+            }
+        }
+        while(i<l.size()){
+            count[l[i].second]+=j;
+            v.push_back(l[i]);
+            ++i;
+        }
+        while(j<r.size()){
+            v.push_back(r[j]);
+            ++j;
+        }
+    }
+};
