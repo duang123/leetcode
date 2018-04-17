@@ -1,0 +1,41 @@
+//114. 二叉树转换链表
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        TreeNode* last=nullptr;
+        dfs(root,last);
+    }
+private:
+    void dfs(TreeNode*root,TreeNode* &last){
+        if(!root)return;
+        if(!root->left && !root->right){
+            last=root;
+            return ;
+        }
+        auto l=root->left;
+        auto r=root->right;
+        TreeNode* ll=nullptr,*rl=nullptr;
+        if(l){
+            dfs(l,ll);
+            last=ll;
+            root->left=nullptr;
+            root->right=l;
+        }
+        if(r){
+            dfs(r,rl);
+            if(ll){
+                ll->right=r;
+            }
+            last=rl;
+        } 
+    }
+};
