@@ -1,0 +1,35 @@
+//113. 路径总和 II
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vector<vector<int>>ret;
+        if(!root)return ret;
+        vector<int>tmp;
+        dfs(root,sum,tmp,ret);
+        return ret;
+    }
+private:
+    void dfs(TreeNode* root,int sum,vector<int>&tmp,vector<vector<int>>&ret){
+        if(!root)return;
+        tmp.push_back(root->val);
+        if(!(root->right) && !(root->left) && sum==root->val){
+            ret.push_back(tmp);
+            tmp.pop_back();
+            return ;
+        }
+        if(root->left)
+            dfs(root->left,sum-root->val,tmp,ret);
+        if(root->right)
+            dfs(root->right,sum-root->val,tmp,ret);
+        tmp.pop_back();
+    }
+};
