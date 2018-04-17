@@ -1,0 +1,35 @@
+//199. 二叉树的右视图
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int>ret;
+        if(!root)return ret;
+        queue<pair<TreeNode*,int>>q;
+        q.push(make_pair(root,0));
+        while(!q.empty()){
+            auto h=q.front();
+            auto r=h.first;
+            auto depth=h.second;
+            q.pop();
+            if(ret.size()==depth){
+                ret.push_back(r->val);
+            }else ret[depth]=r->val;
+            if(r->left){
+                q.push(make_pair(r->left,depth+1));
+            }
+            if(r->right){
+                q.push(make_pair(r->right,depth+1));
+            }
+        }
+        return ret;
+    }
+};
