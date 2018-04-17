@@ -1,0 +1,41 @@
+//236. 二叉树的最近公共祖先
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        vector<TreeNode*>pv,r1;
+        vector<TreeNode*>qv,r2;
+        auto flag=0;
+        dfs(root,p,pv,flag,r1);
+        flag=0;
+        dfs(root,q,qv,flag,r2);
+        auto m=r1.size(),n=r2.size();
+        auto l=m>n? n:m;
+        TreeNode* result=nullptr;
+        for(int i=0;i<l;++i){
+            if(r1[i]==r2[i])
+                result= r1[i];
+        }
+        return result;
+    }
+private:
+    void dfs(TreeNode*root,TreeNode*p,vector<TreeNode*>&pv,int& flag,vector<TreeNode*>&r){
+        if(!root || flag)return;
+        pv.push_back(root);
+        if(root==p){
+            flag=1;
+            r=pv;
+        }  
+        dfs(root->left,p,pv,flag,r);
+        dfs(root->right,p,pv,flag,r);
+        pv.pop_back();
+    }
+};
