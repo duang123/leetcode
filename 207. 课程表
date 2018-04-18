@@ -1,4 +1,3 @@
-//207. 课程表
 class Solution {
 public:
     struct Graph{
@@ -6,7 +5,7 @@ public:
         vector<struct Graph*>neighbor;
         Graph(int c):label(c),neighbor(){}
     };
-    
+    /* dfs
     bool canFinish(int n, vector<pair<int, int>>& p) {
         vector<int>visited(n,-1);
         vector<struct Graph*>G;
@@ -25,6 +24,43 @@ public:
             delete G[i];
         return true;
     }
+    */
+    //bfs
+    bool canFinish(int n, vector<pair<int, int>>& p){
+        vector<int>tmp(n,0);    //入度
+        vector<struct Graph*>G;
+        for(int i=0;i<n;++i)
+            G.push_back(new Graph(i));
+        
+        for(int i=0;i<p.size();++i){
+            auto e1=p[i].first,e2=p[i].second;
+            G[e2]->neighbor.push_back(G[e1]);
+            ++tmp[e1];      //更新入度
+        }
+        queue<struct Graph*>q;
+        for(int i=0;i<n;++i){
+            if(tmp[i]==0){
+                q.push(G[i]);
+            }
+        }
+        
+        while(!q.empty()){
+            auto t=q.front();
+            q.pop();
+            for(int i=0;i<t->neighbor.size();++i){
+                if(--tmp[t->neighbor[i]->label]==0){
+                    q.push(t->neighbor[i]);
+                }
+            }
+        }
+        for(int i=0;i<n;++i){
+            if(tmp[i]!=0)
+                return false;
+        }
+        for(int i=0;i<n;++i)
+            delete G[i];
+        return true;
+    } 
 private:
     bool dfs(struct Graph* g,vector<int>&visited){
         visited[g->label]=0;
