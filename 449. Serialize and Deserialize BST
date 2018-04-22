@@ -1,0 +1,74 @@
+//449. Serialize and Deserialize BST
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string ret="";
+        recursion(root,ret);
+        return ret;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        TreeNode*root=nullptr;
+        int n=data.size();
+        int val=0;
+        for(int i=0;i<n;++i){
+            if(data[i]=='#'){
+                root=insert(root,val);
+                val=0;
+            }
+            else{
+                val=(val*10)+data[i]-'0';
+            }
+        }
+        return root;
+    }
+private:
+    void recursion(TreeNode* root,string&ret){
+        if(!root)
+            return ;
+        string s=convert(root->val);
+        ret+=s;
+        ret+='#';
+        recursion(root->left,ret);
+        recursion(root->right,ret);
+    }
+    string convert(int val){
+        string ret="";
+        while(val){
+            ret+='0'+val%10;
+            val/=10;
+        }
+        reverse(ret.begin(),ret.end());
+        return ret;
+    }
+    TreeNode* insert(TreeNode*root,int val){
+        if(root==nullptr){
+            TreeNode*t=new TreeNode(val);
+            root=t;
+            return root;
+        }
+        else if(root->val>val){
+            root->left=insert(root->left,val);
+        }
+        else if(root->val<val){
+            root->right=insert(root->right,val);
+        }
+        return root;
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));
