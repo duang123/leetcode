@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<string> letterCasePermutation(const string& S) {
+        vector<string>ret;
+        //if(S.empty())return ret;
+        backtrack(ret,S,0);
+        return ret;
+    }
+private:
+    void backtrack(vector<string>&ret,string S,int pos){
+        if(pos==S.size()){
+            ret.push_back(S);
+            return;
+        }
+        if(!isalpha(S[pos]))return backtrack(ret,S,pos+1);
+        S[pos]=tolower(S[pos]);
+        backtrack(ret,S,pos+1);
+        S[pos]=toupper(S[pos]);
+        backtrack(ret,S,pos+1);
+    }
+};
