@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int countArrangement(int N) {
+        auto ret=0;
+        //vector<int>tmp;
+        vector<bool>used(N+1,false);
+        dfs(used,ret,N,1);
+        return ret;
+    }
+private:
+    void dfs(vector<bool>&used,int& ret,int N,int pos){
+        if(pos>N){
+            ++ret;
+            return;
+        }
+        for(int i=1;i<=N;++i){
+            if(used[i]==false){
+                if((i)%(pos)==0 || (pos)%(i)==0){
+                    used[i]=true;
+                    //tmp.push_back(i);
+                    dfs(used,ret,N,pos+1);
+                    //tmp.pop_back();
+                    used[i]=false;
+                }
+            }
+        }
+    }
+};
