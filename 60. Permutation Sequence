@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        string tmp;
+        vector<bool>used(n,false);
+        backtrack(tmp,used,n,k);
+        return ret;
+    }
+private:
+    string ret;
+    void backtrack(string& tmp,vector<bool>&used,int n,int& k){
+        if(tmp.size()==n){
+            if(--k==0)
+                ret=tmp;
+            return;
+        }
+        for(int i=0;i<n;++i){
+            if(used[i])continue;
+            used[i]=true;
+            tmp.push_back(i+1+'0');
+            backtrack(tmp,used,n,k);
+            if(k==0)return;
+            used[i]=false;
+            tmp.pop_back();
+        }
+    }
+};
