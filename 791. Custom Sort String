@@ -1,0 +1,23 @@
+class Solution {
+public:
+    string customSortString(string S, string T) {
+        map<char,int>mp;
+        for(auto c:S)
+            ++mp[c];
+        for(auto c:T)
+            if(mp.find(c)!=mp.end())
+                ++mp[c];
+        string ret;
+        for(auto c:S){
+            int count=mp[c];
+            if(count>1){
+                ret+=string(count-1,c);
+            }
+        }
+        for(auto c:T){
+            if(mp.find(c)==mp.end())
+                ret.push_back(c);
+        }
+        return ret;
+    }
+};
