@@ -1,0 +1,36 @@
+class LRUCache {
+public:
+    LRUCache(int capacity):_capacity(capacity){}
+                
+    int get(int key) {
+        auto it = _cache.find(key);
+        if(it == _cache.end())return -1;
+        update(it);
+        return it->second.first;
+    }
+    
+    void put(int key, int value) {
+        auto it = _cache.find(key);
+        if(it != _cache.end()) update(it);
+        else{
+            if(_queue.size()==_capacity){
+                _cache.erase(_queue.back());
+                _queue.pop_back();
+            }
+            _queue.push_front(key);
+        }
+        _cache[key]={value,_queue.begin()};
+    }
+private:
+    typedef list<int> Queue;
+    typedef pair<int,Queue::iterator> P;
+    typedef unordered_map<int,P> M;
+    int _capacity;
+    M _cache;
+    Queue _queue;
+    void update(M::iterator it){
+        _queue.erase(it->second.second);
+        _queue.push_front(it->first);
+        it->second.second=_queue.begin();        
+    }
+};
