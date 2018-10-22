@@ -26,6 +26,36 @@ vector<vector<int>> threeSum(vector<int>&v,int target){
 	return ret;
 }
 
+/*
+vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>>ret;
+        if(nums.empty())return ret;
+        auto n=nums.size();
+        sort(nums.begin(),nums.end());
+        vector<int>vec(3);
+        for(int i=0;i<n;++i){
+            if(i && nums[i]==nums[i-1])continue;
+            int target=-nums[i];
+            int l=i+1,h=n-1;
+            while(l<h){
+                if(nums[l]+nums[h]>target)--h;
+                else if(nums[l]+nums[h]<target)++l;
+                else if(nums[l]+nums[h]==target){
+                    vec[0]=nums[i];
+                    vec[1]=nums[l];
+                    vec[2]=nums[h];
+                    ret.push_back(vec);
+                    ++l;--h;
+                    while(l<h && nums[l]==vec[1])++l;
+                    while(l<h && nums[h]==vec[2])--h;
+                }
+            }
+        }
+        return ret;
+    }
+
+*/
+
 int main(){
 	vector<int>v{-1, 0, 1, 2, -1, -4};
 	auto ret=threeSum(v,0);
