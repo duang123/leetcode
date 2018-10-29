@@ -1,0 +1,18 @@
+bool canJump(const vector<int>& nums) {
+        auto n=nums.size();
+        /*vector<bool>dp(n,false);
+        dp[0]=true;
+        for(int i=1;i<n;++i){
+            for(int j=0;j<i;++j)
+                if(dp[j]&&i-j<=nums[j]){
+                    dp[i]=true;
+                    break;
+                }
+        }
+        return dp[n-1];
+        */
+        auto reach=0,i=0;
+        for(;reach>=i&&i<n;++i)
+            reach=max(i+nums[i],reach);
+        return i==n;
+    }
