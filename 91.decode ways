@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int numDecodings(const string& s) {
+        if(s.empty())return 0;
+        if(s[0]=='0')return 0;
+        auto n=s.size();
+        vector<int>dp(n,0);
+        dp[0]=1;
+        for(int i=1;i<n;++i){
+            auto t=(s[i-1]-'0')*10+(s[i]-'0');
+            if(i==1){
+                if(t<=26 && t>10){
+                    if(t==20)dp[1]=1;
+                    else dp[1]=2;
+                }else if(t>26){
+                    if(t%10==0)
+                    return 0;
+                else dp[1]=1;
+            }else if(t==10) dp[1]=1;
+            continue;
+            }
+            if(t<=26 && t>10){
+                if(t%10==0)dp[i]+=dp[i-2];
+                else dp[i]+=dp[i-2]+dp[i-1];
+            }else if((t>0 && t<=10)){
+                dp[i]+=dp[i-2];
+            }else if(t>26){
+                if(t%10)
+                    dp[i]+=dp[i-1];
+                else return 0;
+            }else if(t==0) return 0;
+            
+        }
+        return dp[n-1];
+    }
+};
