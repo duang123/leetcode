@@ -9,9 +9,37 @@
  */
 class Solution {
 public:
+/*
     bool isSymmetric(TreeNode* root) {
         return helper(root,root);
     }
+*/
+
+    bool isSymmetric(TreeNode* root) {
+        if(!root)return true;
+        //return func(root->left, root->right);
+        queue<TreeNode*>q;
+        q.push(root->left);
+        q.push(root->right);
+        while(!q.empty()){
+            auto l=q.front();q.pop();
+            auto r=q.front();q.pop();
+            if(!l && !r)
+                continue;
+            else if( !l || !r)
+                return false;
+            else{
+                if(l->val != r->val)
+                    return false;
+                q.push(l->left);
+                q.push(r->right);
+                q.push(l->right);
+                q.push(r->left);
+            }
+        }
+        return true;
+    }
+    
     bool helper(TreeNode* l,TreeNode* r){
         if(!l&&!r)return true;
         if(l==nullptr||r==nullptr)return false;
