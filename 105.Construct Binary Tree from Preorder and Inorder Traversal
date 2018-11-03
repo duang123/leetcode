@@ -1,0 +1,27 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(const vector<int>& preorder, const vector<int>& inorder) {
+        if(preorder.empty() && inorder.empty())return nullptr;
+        return func(preorder, 0, preorder.size(), inorder, 0, inorder.size());
+    }
+    
+    TreeNode* func(const vector<int>& preorder, int l, int le, const vector<int>& inorder, int r, int re){
+        if(l >= le || r >= re)return nullptr;
+        TreeNode* root = new TreeNode(preorder[l]);
+        auto index = find(inorder.begin()+r, inorder.begin()+re, preorder[l]);
+        int len = index-inorder.begin()-r;
+        root->left = func(preorder, l+1, l+1+len, inorder, r, r+len);
+        root->right = func(preorder, l+1+len, le, inorder, r+len+1, re);
+        return root;
+    }
+    
+};
