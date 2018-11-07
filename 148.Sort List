@@ -11,17 +11,17 @@ public:
     ListNode* sortList(ListNode* head) {
         if(!head || !head->next)return head;
         auto mid=findMid(head);
-        auto midNext=mid->next;
+        auto r=sortList(mid->next);
         mid->next=nullptr;
         auto l=sortList(head);
-        auto r=sortList(midNext);
+        
         auto ret=merge(l,r);
         return ret;
     }
     ListNode* findMid(ListNode* head){
         if(!head || !head->next)return head;
         auto slow=head,fast=head->next;
-        while(fast->next && fast->next->next){
+        while(fast && fast->next ){
             slow=slow->next;
             fast=fast->next->next;
         }
