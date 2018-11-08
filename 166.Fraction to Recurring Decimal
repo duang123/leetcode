@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string fractionToDecimal(int num, int den) {
+        if(!num)return "0";
+        string ret;
+        if(num<0 ^ den<0)ret.push_back('-');
+        long a=abs((long)num);
+        long b=abs((long)den);
+        ret+=to_string(a/b);
+        long r=a%b;
+        if(!r)return ret;
+        ret.push_back('.');
+        map<long,long>m;
+        r*=10;
+        while(r){
+            if(m[r]>0){
+                ret.insert(m[r], 1, '(');
+                ret+=')';
+                return ret;
+            }
+            m[r]=ret.size();
+            ret+=to_string(r/b);
+            r=r%b*10;
+        }
+        return ret;
+    }
+};
