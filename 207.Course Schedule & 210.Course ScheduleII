@@ -1,0 +1,70 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        auto graph=formG(prerequisites, numCourses);
+        vector<bool>used(numCourses, false), onPath=used;
+        for(int i=0; i < numCourses; ++i){
+            if(!used[i]){
+                if(!dfs(i, used, onPath, graph))
+                    return false;
+            }
+                
+        }
+        return true;
+    }
+    vector<vector<int>> formG(vector<pair<int, int>>& s, int n){
+        vector<vector<int>>ret(n);
+        for(auto p : s)
+            ret[p.second].push_back(p.first);
+        return ret;
+    }
+    
+    bool dfs(int i, vector<bool>&used,vector<bool>&onPath, vector<vector<int>>& g){
+        if(used[i])return true;
+        used[i]=onPath[i]=true;
+        for(auto e : g[i]){
+            if(onPath[e] || !dfs(e, used, onPath, g))
+                return false;
+        }
+        onPath[i]=false;
+        return true;
+    }
+    
+    vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
+        auto g=formG(prerequisites, numCourses);
+        auto inp=formInp(prerequisites, numCourses);
+        vector<int>ret;
+        queue<int>q;
+        for(int i=0; i<inp.size(); ++i){
+                if(inp[i]==0){
+                    q.push(i);
+                    inp[i]=-1;
+                }
+            }
+        while(!q.empty()){
+            auto t = q.front();
+            q.pop();
+            ret.push_back(t);
+            for(auto e : g[t]){
+                if(--inp[e] == 0){
+                    q.push(e);
+                    inp[e]=-1;
+                }     
+            }    
+        } 
+        if(ret.size() == numCourses)
+            return ret;
+        ret.resize(0);
+        return ret;
+        
+    }
+    
+    vector<int> formInp(vector<pair<int, int>>& p, int n){
+        vector<int>ret(n, 0);
+        for(auto e : p)
+            ++ret[e.first];
+        return ret;
+    }
+};
+
+
