@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int calculate(const string& s) {
+        istringstream in("+"+s);
+        char op;
+        int ret=0,last,num;
+        while(in>>op>>num){
+            if(op == '+' || op=='-'){
+                num= op=='+'? num: -num;
+                ret+=num;
+            }else{
+                num= op=='*'? last*num : last/num;
+                ret=ret-last+num;
+            }
+            last=num;
+        }
+        return ret;
+    }
+};
