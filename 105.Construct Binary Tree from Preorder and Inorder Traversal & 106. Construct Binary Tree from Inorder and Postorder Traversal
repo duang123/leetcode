@@ -24,4 +24,20 @@ public:
         return root;
     }
     
+    TreeNode* buildTree1(vector<int>& inorder, vector<int>& postorder) {
+        if(inorder.empty())return nullptr;
+        auto n =inorder.size();
+        return func1(inorder, 0, n-1, postorder, 0, n-1);
+    }
+    
+    TreeNode* func1(vector<int>& inorder, int l1, int h1, vector<int>& postorder, int l2, int h2){
+        if(l1>h1)return nullptr;
+        TreeNode* root=new TreeNode(postorder[h2]);
+        auto it=find(inorder.begin()+l1,inorder.begin()+h1+1, postorder[h2]);
+        int dis=it-(inorder.begin()+l1);
+        root->left=func1(inorder, l1, l1+dis-1, postorder, l2, l2+dis-1);
+        root->right=func1(inorder, l1+dis+1, h1, postorder, l2+dis, h2-1);
+        return root;
+    }
+    
 };
