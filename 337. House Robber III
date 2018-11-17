@@ -1,0 +1,30 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int rob(TreeNode* root) {
+        if(!root)return 0;
+        map<TreeNode*, int>m;
+        return func(root, m); 
+    }
+    
+    int func(TreeNode* root, map<TreeNode*, int>&m){
+        if(!root)return 0;
+        if(m.find(root)!=m.end())return m[root];
+        auto v=0;
+        if(root->left)
+            v+=func(root->left->left, m)+func(root->left->right, m);
+        if(root->right)
+            v+=func(root->right->left, m)+func(root->right->right, m);
+        auto t=func(root->left, m)+func(root->right, m);
+        m[root]=max(t,v+root->val);
+        return m[root];
+    }
+};
