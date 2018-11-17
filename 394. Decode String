@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string decodeString(const string& s) {
+        if(s.empty())return "";
+        int i=0;
+        return func(s, i);
+    }
+    
+    string func(const string& s, int& i){
+        string ret;
+        auto n=s.size();
+        while(i<n && s[i]!=']'){
+            if(!isdigit(s[i]))
+                ret+=s[i++];
+            else{
+                auto t=0;
+                while(i<n && isdigit(s[i])){
+                    t=t*10+s[i]-'0';
+                    ++i;
+                }
+                ++i;
+                auto ss=func(s, i);
+                ++i;
+                while(--t>=0)
+                    ret+=ss;
+            }
+        }
+        return ret;
+    }
+};
