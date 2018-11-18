@@ -1,0 +1,63 @@
+//430. Flatten a Multilevel Doubly Linked List
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val = NULL;
+    Node* prev = NULL;
+    Node* next = NULL;
+    Node* child = NULL;
+
+    Node() {}
+
+    Node(int _val, Node* _prev, Node* _next, Node* _child) {
+        val = _val;
+        prev = _prev;
+        next = _next;
+        child = _child;
+    }
+};
+*/
+class Solution {
+public:
+    Node* flatten(Node* head) {
+        if(!head)return nullptr;
+        auto ret=head;
+        /*
+        while(head){
+            auto next=head->next;
+            if(head->child){
+                auto p=flatten(head->child);
+                head->child=nullptr;
+                head->next=p;
+                p->prev=head;
+                auto tail=findTail(p);
+                tail->next=next;
+                if(next)
+                    next->prev=tail;
+            }
+            head=next;      
+        }
+        */
+        for(; head; head=head->next){
+            if(head->child){
+                auto next=head->next;
+                auto child=head->child;
+                head->child=nullptr;
+                head->next=child;
+                child->prev=head;
+                auto tail=findTail(child);
+                tail->next=next;
+                if(next)
+                    next->prev=tail;
+            }
+        }
+        return ret;
+    }
+    Node* findTail(Node* root){
+        if(!root)return root;
+        while(root->next)
+            root=root->next;
+        return root;
+    }
+};
