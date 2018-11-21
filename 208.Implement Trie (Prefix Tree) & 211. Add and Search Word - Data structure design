@@ -1,0 +1,109 @@
+class TrieNode{
+public:
+    TrieNode* son[26];
+    bool isWord;
+    TrieNode():isWord(false){
+        for(auto &e:son)
+            e=nullptr;
+    }
+};
+class Trie {
+public:
+    /** Initialize your data structure here. */
+    Trie():root(new TrieNode()) {}
+    
+    /** Inserts a word into the trie. */
+    void insert(const string& word) {
+        auto p=root;
+        for(auto c : word){
+            if(!p->son[c-'a'])p->son[c-'a']=new TrieNode();
+            p=p->son[c-'a'];
+        }
+        p->isWord=true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    bool search(const string& word) {
+        auto p=root;
+        for(auto c : word){
+            if(!p->son[c-'a'])return false;
+            p=p->son[c-'a'];
+        }
+        return p->isWord;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    bool startsWith(const string& prefix) {
+        auto p=root;
+        for(auto c : prefix){
+            if(!p->son[c-'a'])return false;
+            p=p->son[c-'a'];
+        }
+        return true;
+    }
+private:
+    TrieNode* root;
+};
+
+
+class Tries{
+public:
+    Tries():isKey(false),son(26,nullptr)
+    {}
+
+    vector<Tries*> son;
+    bool isKey;
+};
+class WordDictionary {
+public:
+    /** Initialize your data structure here. */
+    WordDictionary():root(new Tries()) {}
+    
+    /** Adds a word into the data structure. */
+    void addWord(const string& word) {
+        auto p=root;
+        for(auto c : word){
+            if(p){
+                if(!p->son[c-'a'])
+                    p->son[c-'a']=new Tries();
+                p=p->son[c-'a'];
+            }
+        }
+        p->isKey=true;
+    }
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    bool search(const string& word) {
+        if(word.empty())return false;
+        return query(word, root);
+    }
+private:
+    Tries*root;
+    
+    bool query(const string& word, Tries* r){
+        auto p=r;
+        auto n=word.size();
+        for(int i=0; i<n; ++i){
+            if(p && word[i]!='.')
+                p=p->son[word[i]-'a'];
+            else if(p && word[i]=='.'){
+                auto tmp=p;
+                for(auto ele : p->son){
+                    p=ele;
+                    if(query(word.substr(i+1), ele))
+                        return true;
+                }
+                
+            }
+            else break;
+        }
+        return p && p->isKey;
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * bool param_2 = obj.search(word);
+ */
